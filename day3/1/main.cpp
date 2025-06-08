@@ -38,16 +38,14 @@ int main(int ac, char**av)
         for (int i = mul + 4; i < content.size(); i++)
         {
             if (!isdigit(content[i]))
-            {
                 break;
-            }
             while (isdigit(content[i]))
             {
                 first += content[i];
                 i++;
             }
             if (content[i] != ',')
-            break;
+                break;
             i++;
             while (isdigit(content[i]))
             {
