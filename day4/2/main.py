@@ -2,11 +2,9 @@ def valid(c: str) ->bool:
     return (c == 'M' or c == 'S')
 
 def is_valid_X(top_left: str, top_right: str, bottom_left: str, bottom_right: str) -> bool:
-    if not valid(top_left) or not valid(top_right) or not valid(bottom_left) or not valid(bottom_right):
+    if not all(valid(c) for c in [top_left, top_right, bottom_left, bottom_right]):
         return False
-    if top_right != bottom_left and top_left != bottom_right:
-        return True
-    return False
+    return top_right != bottom_left and top_left != bottom_right
 
 def main():
     arr = []
