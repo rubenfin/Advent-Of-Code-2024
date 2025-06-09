@@ -38,8 +38,6 @@ def main():
             if not allowed(order, instructions[y], num, x):
                 break
         else:
-            print (instructions[y])
-            print (instructions[y][size // 2 + (size % 2 == 0)])
             total += int(instructions[y][size // 2 + (size % 2 == 0)])
     print(total)
 
