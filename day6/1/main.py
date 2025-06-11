@@ -1,9 +1,4 @@
-
-
-
-def equal_to_guard(c: str) -> bool:
-    return (c in '^>v<')
-    
+from guard import Guard
 
 def find_guard(mmap: list, height: int, width: int)-> list:
     for y in range(0, height):
@@ -11,26 +6,18 @@ def find_guard(mmap: list, height: int, width: int)-> list:
             if mmap[y][x] in '^>v<':
                 return (y, x)
 
-def move(mmap: list):
-
-
 def main():
-    guard = {
-    '^': [-1, 0],
-    '>': [0, 1],
-    'v': [1, 0],
-    '<': [0, -1]
-    }
-    wall = '#'
     mmap = []
     with open("../input.txt") as f:
         mmap = f.read().split('\n')
+    mmap = [list(row) for row in mmap]
     height = len(mmap)
     width = len(mmap[0])
     g_location = find_guard(mmap, height, width)
-    move(mmap)
-    print(g_location)
-
+    y, x = g_location[0], g_location[1]
+    g = Guard(mmap[y][x], g_location,height, width)
+    g.move(mmap)
+    g.visited()
 
 if __name__ == "__main__":
     main()

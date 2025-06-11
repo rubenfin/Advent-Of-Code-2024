@@ -14,7 +14,7 @@ def allowed(order: list, instructions: list, num: int, idx: int):
 
     return True
 
-def change_places(order: list, instructions: list, num: int, idx: int):
+# def change_places(order: list, instructions: list, num: int, idx: int):
     
 
 def main():
@@ -39,9 +39,9 @@ def main():
         for x in range(0, size):
             num = instructions[y][x]
             if not allowed(order, instructions[y], num, x):
-                
-                total +=  
-    print(total)
+                print("")
+                # total +=  
+    # print(total)
 
 
 
