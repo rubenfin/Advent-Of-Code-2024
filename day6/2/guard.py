@@ -1,3 +1,5 @@
+import copy 
+
 Y = 0
 X = 1
 WALL = '#'
@@ -16,7 +18,6 @@ class Guard:
             '<' : [0, -1],
         }
         self.amount_visited = 0
-        self.walked = set()
         self.total_obstacles = 0
     
     def inside_map(self, y: int, x: int) -> bool:
@@ -45,24 +46,33 @@ class Guard:
 
         return dy, dx
 
-
-    def valid_obstacle(self, map: list, y: int, x: int):
-        curr_dir = self.get_next_direction(self.current_dir)
-        dy, dx = self.get_coordinates_for_turn(curr_dir)
-        walked = set(self.walked)
-
-        while (self.inside_map(y + dy, x + dx)):
-            if (y + dy, x + dx, dy, dx) in walked:
-              self.total_obstacles += 1
-              break
-
+    def simulate(self, map: list, y: int, x: int):
+        map_dc = copy.deepcopy(map)
+        if not self.inside_map(y, x):
+            return
+        dy, dx = self.get_coordinates_for_turn(self.current_dir)
+        if not self.inside_map(dy, dx):
+            return
+        map_dc[dy][dx] = WALL
+        walked = set()
+        dir = self.current_dir
+        pos = (y, x)
+        while True:
+            y, x = pos
+            if not self.inside_map(y, x):
+                break
+            dy, dx = self.get_coordinates_for_turn(dir)
+            if (y, x, dy, dx) in walked:
+                self.total_obstacles +=1
+                break
             walked.add((y, x, dy, dx))
-            
-            if map[y + dy][x + dx] == WALL:
-                curr_dir = self.get_next_direction(curr_dir)
-                dy, dx = self.get_coordinates_for_turn(curr_dir)
-            y += dy
-            x += dx
+            if not self.inside_map(y + dy, x + dx):
+                    break
+            print(self.width, x + dx)
+            if map_dc[y + dy][x + dx] == WALL:
+                dir = self.get_next_direction(dir)
+                continue
+            pos = (y + dy, x + dx)
 
     def move(self, map: list):
         while True:
@@ -70,8 +80,8 @@ class Guard:
             if not self.inside_map(y, x):
                 break
             dy, dx = self.get_coordinates_for_turn(self.current_dir)
-            self.walked.add((y, x, dy, dx))
-            self.valid_obstacle(map, y, x)
+
+            self.simulate(map, y, x)
             if map[y][x] != 'X':
                 map[y][x] = 'X'
                 self.amount_visited += 1
