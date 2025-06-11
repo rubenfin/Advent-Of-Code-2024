@@ -15,8 +15,10 @@ def main():
     width = len(mmap[0])
     g_location = find_guard(mmap, height, width)
     y, x = g_location[0], g_location[1]
-    g = Guard(mmap[y][x], g_location,height, width)
+
+    g = Guard(mmap[y][x], list(g_location), height, width)
     g.move(mmap)
+    
     g.visited()
     g.obstacles()
 
