@@ -16,7 +16,7 @@ class Guard:
             '<' : [0, -1],
         }
         self.amount_visited = 0
-        self.wall_hits = set()
+        self.walked = set()
         self.total_obstacles = 0
     
     def inside_map(self, y: int, x: int) -> bool:
@@ -35,22 +35,29 @@ class Guard:
         print("You can place a total of", self.total_obstacles, "where the guard ends in a loop!")
 
     def get_next_direction(self, curr_dir: str) -> str:
-        idx = self.directions.index(self.current_dir)
+        idx = self.directions.index(curr_dir)
+
         return self.directions[(idx + 1) % 4]
 
     def get_coordinates_for_turn(self, curr_dir: str) -> list:
         dy = self.guard_dirs.get(curr_dir)[Y]
         dx = self.guard_dirs.get(curr_dir)[X]
+
         return dy, dx
 
 
     def valid_obstacle(self, map: list, y: int, x: int):
         curr_dir = self.get_next_direction(self.current_dir)
         dy, dx = self.get_coordinates_for_turn(curr_dir)
+        walked = set(self.walked)
+
         while (self.inside_map(y + dy, x + dx)):
-            if (y + dy, x + dx, dy, dx) in self.wall_hits:
+            if (y + dy, x + dx, dy, dx) in walked:
               self.total_obstacles += 1
               break
+
+            walked.add((y, x, dy, dx))
+            
             if map[y + dy][x + dx] == WALL:
                 curr_dir = self.get_next_direction(curr_dir)
                 dy, dx = self.get_coordinates_for_turn(curr_dir)
@@ -62,15 +69,15 @@ class Guard:
             y, x = self.current_pos
             if not self.inside_map(y, x):
                 break
+            dy, dx = self.get_coordinates_for_turn(self.current_dir)
+            self.walked.add((y, x, dy, dx))
             self.valid_obstacle(map, y, x)
             if map[y][x] != 'X':
                 map[y][x] = 'X'
                 self.amount_visited += 1
-            dy, dx = self.get_coordinates_for_turn(self.current_dir)
             if not self.inside_map(y + dy, x + dx):
                     break
             if map[y + dy][x + dx] == WALL:
-                self.wall_hits.add((y + dy, x + dx, dy, dx))
                 self.turn()
                 continue
             self.current_pos = (y + dy, x + dx)
