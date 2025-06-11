@@ -39,10 +39,8 @@ class Guard:
         return self.directions[(idx + 1) % 4]
 
     def get_coordinates_for_turn(self, curr_dir: str) -> list:
-        turned_dir = self.get_next_direction(curr_dir)
-
-        dy = self.guard_dirs.get(turned_dir)[Y]
-        dx = self.guard_dirs.get(turned_dir)[X]
+        dy = self.guard_dirs.get(curr_dir)[Y]
+        dx = self.guard_dirs.get(curr_dir)[X]
         return dy, dx
 
 
@@ -68,8 +66,7 @@ class Guard:
             if map[y][x] != 'X':
                 map[y][x] = 'X'
                 self.amount_visited += 1
-            dy = self.guard_dirs.get(self.current_dir)[Y]
-            dx = self.guard_dirs.get(self.current_dir)[X]
+            dy, dx = self.get_coordinates_for_turn(self.current_dir)
             if not self.inside_map(y + dy, x + dx):
                     break
             if map[y + dy][x + dx] == WALL:
