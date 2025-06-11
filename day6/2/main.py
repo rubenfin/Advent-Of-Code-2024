@@ -18,7 +18,6 @@ def main():
 
     g = Guard(mmap[y][x], list(g_location), height, width)
     g.move(mmap)
-    
     g.visited()
     g.obstacles()
 
