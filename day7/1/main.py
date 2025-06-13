@@ -14,16 +14,24 @@ def do_operations(values: list, operations: list):
     print("RESULT", stack[0])
     return stack[0]
 
+def add_operation(operations: list):
+    operations.insert(0, '+')
+    operations.pop()
+
 def calculate(result: int, values: list):
     length = len(values)
     operations = ['*'] * (length - 1)
     accepted = [0] * length
+    res = 0
     for i in range(0, length):
-        for j in range(0, operations):
-            for x in range(0, operations):
-                res = do_operations(values, operations)
+        while True:
+                for i in range(0, operations):
+                    for j in range(0, operations):
+                add_operation(operations)
                 if res == result:
                     accepted[i] = 1
+                if '*' not in operations:
+                    break
     return accepted
 
 def go_through_numbers(results: list, arr: list):
