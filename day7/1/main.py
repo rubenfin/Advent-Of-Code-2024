@@ -34,6 +34,7 @@ def calculate(result: int, values: list):
                     break
     return accepted
 
+
 def go_through_numbers(results: list, arr: list):
     idx = 0
     for idx in range(0, len(results)):
