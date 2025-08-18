@@ -13,7 +13,7 @@ def main():
         if trail[y][x] != elevation:
             return
         if elevation == 9:
-            total_trails.append((y,x))
+            total_trails += 1
             return
         find_trail(y + 1, x, elevation+1)
         find_trail(y - 1, x, elevation+1)
@@ -22,9 +22,9 @@ def main():
     for y in range(h):
         for x in range(w):
             if trail[y][x] == 0:
-                total_trails = []
+                total_trails = 0
                 find_trail(y, x, 0)
-                res += len(total_trails)
+                res += total_trails
     print(res)
     return res
 if __name__ == "__main__":
